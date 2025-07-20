@@ -1,21 +1,24 @@
 "use client";
 
-import { env } from "@/env";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider as CSPostHogProvider } from "posthog-js/react";
 import { useEffect } from "react";
 
+// ✅ ต้องใช้ process.env โดยตรงใน client-side
+const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY!;
+const NODE_ENV = process.env.NODE_ENV;
+
 if (typeof window !== "undefined") {
-    posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
+    posthog.init(POSTHOG_KEY, {
         api_host: "/ingest",
         rate_limiting: {
             events_burst_limit: 10,
             events_per_second: 5,
         },
         loaded: (posthog) => {
-            if (env.NODE_ENV === "development") posthog.debug();
+            if (NODE_ENV === "development") posthog.debug();
         },
     });
 }
