@@ -41,9 +41,9 @@ export type PricingFeature = {
 };
 
 export const pricingIds = {
-    free: "free",
-    pro: "pro",
-    premium: "premium",
+    free: "Sarah",
+    pro: "Sunday",
+    premium: "Seven",
 } as const;
 
 export const pricingFeatures: PricingFeature[] = [
@@ -119,6 +119,7 @@ export const pricingPlans: PrincingPlan[] = [
             monthly: 0,
             yearly: 0,
         },
+        variantId: { monthly: 583299, yearly: 583299 },
         currency: {
             code: "USD",
             symbol: "$",
@@ -136,10 +137,10 @@ export const pricingPlans: PrincingPlan[] = [
         description:
             "Advanced features to help you scale any business without limits.",
         price: {
-            monthly: 99,
-            yearly: 999,
+            monthly: 9.9,
+            yearly: 99.9,
         },
-        variantId: { monthly: 362869, yearly: 362870 },
+        variantId: { monthly: 583297, yearly: 583298 },
         currency: {
             code: "USD",
             symbol: "$",
@@ -156,10 +157,10 @@ export const pricingPlans: PrincingPlan[] = [
         description:
             "For teams with more complex needs requiring the highest levels of support.",
         price: {
-            monthly: 199,
-            yearly: 1999,
+            monthly: 17,
+            yearly: 170,
         },
-        variantId: { monthly: 362872, yearly: 362874 },
+        variantId: { monthly: 582549, yearly: 583296 },
         currency: {
             code: "USD",
             symbol: "$",
