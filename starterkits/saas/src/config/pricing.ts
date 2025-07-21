@@ -119,7 +119,7 @@ export const pricingPlans: PrincingPlan[] = [
             monthly: 0,
             yearly: 0,
         },
-        variantId: { monthly: 583299, yearly: 583299 },
+        variantId: { monthly: 583369, yearly: 583369 },
         currency: {
             code: "USD",
             symbol: "$",
@@ -138,9 +138,9 @@ export const pricingPlans: PrincingPlan[] = [
             "Advanced features to help you scale any business without limits.",
         price: {
             monthly: 9.9,
-            yearly: 99.9,
+            yearly: 99,
         },
-        variantId: { monthly: 583297, yearly: 583298 },
+        variantId: { monthly: 583373, yearly: 583375 },
         currency: {
             code: "USD",
             symbol: "$",
@@ -160,7 +160,7 @@ export const pricingPlans: PrincingPlan[] = [
             monthly: 17,
             yearly: 170,
         },
-        variantId: { monthly: 582549, yearly: 583296 },
+        variantId: { monthly: 583377, yearly: 583378 },
         currency: {
             code: "USD",
             symbol: "$",
