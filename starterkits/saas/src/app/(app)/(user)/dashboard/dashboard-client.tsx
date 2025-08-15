@@ -176,7 +176,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         <Card>
-          <CardContent className="pt-6 flex justify-center">
+          <CardContent className="flex items-center justify-center h-24">
             <ServiceButton
               service="google"
               label="Google"
@@ -187,7 +187,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         </Card>
 
         <Card>
-          <CardContent className="pt-6 flex justify-center">
+          <CardContent className="flex items-center justify-center h-24">
             <ServiceButton
               service="spotify"
               label="Spotify"
@@ -198,7 +198,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         </Card>
 
         <Card>
-          <CardContent className="pt-6 flex justify-center">
+          <CardContent className="flex items-center justify-center h-24">
             <ServiceButton
               service="discord"
               label="Discord"
@@ -209,7 +209,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         </Card>
 
         <Card>
-          <CardContent className="pt-6 flex justify-center">
+          <CardContent className="flex items-center justify-center h-24">
             <ServiceButton
               service="github"
               label="GitHub"
