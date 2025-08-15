@@ -160,65 +160,73 @@ export function DashboardClient({ user }: DashboardClientProps) {
     }
   }, [searchParams, router]);
 
-  return (
-    <>
-      {message && (
-        <div
-          className={`p-4 rounded-lg border ${
-            message.includes("✅")
-              ? "border-green-500 bg-green-50 text-green-700"
-              : "border-red-500 bg-red-50 text-red-700"
-          }`}
-        >
-          <p className="text-sm">{message}</p>
-        </div>
-      )}
+return (
+  <>
+    {message && (
+      <div
+        className={`p-4 rounded-lg border ${
+          message.includes("✅")
+            ? "border-green-500 bg-green-50 text-green-700"
+            : "border-red-500 bg-red-50 text-red-700"
+        }`}
+      >
+        <p className="text-sm">{message}</p>
+      </div>
+    )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-        <Card>
-          <CardContent className="flex items-center justify-center h-24">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <div className="flex items-center justify-center w-full h-full">
             <ServiceButton
               service="google"
               label="Google"
               icon={<GoogleIcon />}
               user={user}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-          <CardContent className="flex items-center justify-center h-24">
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <div className="flex items-center justify-center w-full h-full">
             <ServiceButton
               service="spotify"
               label="Spotify"
               icon={<MusicIcon className="h-4 w-4" />}
               user={user}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-          <CardContent className="flex items-center justify-center h-24">
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <div className="flex items-center justify-center w-full h-full">
             <ServiceButton
               service="discord"
               label="Discord"
               icon={<DiscordIcon />}
               user={user}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-          <CardContent className="flex items-center justify-center h-24">
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <div className="flex items-center justify-center w-full h-full">
             <ServiceButton
               service="github"
               label="GitHub"
               icon={<GithubIcon className="h-4 w-4" />}
               user={user}
             />
-          </CardContent>
-        </Card>
-      </div>
-    </>
-  );
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </>
+);
 }
