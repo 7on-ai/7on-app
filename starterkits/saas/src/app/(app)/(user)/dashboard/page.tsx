@@ -1,83 +1,232 @@
+"use client";
+
 import { AppPageShell } from "@/app/(app)/_components/page-shell";
 import { dashboardPageConfig } from "@/app/(app)/(user)/dashboard/_constants/page-config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icons";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getUser } from "@/server/auth";
+import { type User } from "next-auth";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
-    ActivityIcon,
-    CreditCardIcon,
-    DollarSignIcon,
-    Users2Icon,
+    GithubIcon,
+    MusicIcon,
 } from "lucide-react";
 
+// Service button component
+interface ServiceButtonProps {
+    service: 'google' | 'spotify' | 'discord' | 'github';
+    label: string;
+    icon: React.ReactNode;
+    user: User | null;
+}
+
+function ServiceButton({ service, label, icon, user }: ServiceButtonProps) {
+    const [isConnecting, setIsConnecting] = useState(false);
+
+    const handleConnect = () => {
+        if (!user) return;
+        
+        setIsConnecting(true);
+        
+        // สร้าง state parameter
+        const state = btoa(JSON.stringify({
+            user_id: user.id,
+            service: service,
+            timestamp: Date.now()
+        }));
+        
+        // Auth0 Client IDs
+        const clientIds = {
+            google: process.env.NEXT_PUBLIC_AUTH0_GOOGLE_CLIENT_ID,
+            spotify: process.env.NEXT_PUBLIC_AUTH0_SPOTIFY_CLIENT_ID,
+            discord: process.env.NEXT_PUBLIC_AUTH0_DISCORD_CLIENT_ID,
+            github: process.env.NEXT_PUBLIC_AUTH0_GITHUB_CLIENT_ID
+        };
+        
+        const scopes = {
+            google: 'profile email',
+            spotify: 'user-read-email user-read-private',
+            discord: 'identify email',
+            github: 'user:email'
+        };
+        
+        const authUrl = `https://${process.env.NEXT_PUBLIC_AUTH0_DOMAIN}/authorize?` +
+            `response_type=code&` +
+            `client_id=${clientIds[service]}&` +
+            `redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_SUPABASE_URL + '/functions/v1/oauth-callback')}&` +
+            `scope=${encodeURIComponent(scopes[service])}&` +
+            `state=${state}`;
+        
+        window.location.href = authUrl;
+    };
+
+    return (
+        <Button 
+            onClick={handleConnect}
+            disabled={isConnecting || !user}
+            className="w-full gap-2 text-lg font-bold"
+            variant="outline"
+        >
+            {isConnecting ? <Icons.loader className="h-5 w-5" /> : icon}
+            {isConnecting ? 'Connecting...' : `Connect ${label}`}
+        </Button>
+    );
+}
+
+// Google Icon component
+function GoogleIcon() {
+    return (
+        <svg className="h-5 w-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+    );
+}
+
+// Discord Icon component
+function DiscordIcon() {
+    return (
+        <svg className="h-5 w-5" fill="#5865F2" viewBox="0 0 24 24">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+        </svg>
+    );
+}
+
 export default function DashboardPage() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const [message, setMessage] = useState('');
+    const [user, setUser] = useState<User | null>(null);
+    
+    // Get user
+    useEffect(() => {
+        getUser().then(setUser);
+    }, []);
+    
+    // Handle OAuth callback results
+    useEffect(() => {
+        const connected = searchParams.get('connected');
+        const status = searchParams.get('status');
+        const error = searchParams.get('error');
+        
+        if (connected && status === 'success') {
+            setMessage(`✅ Successfully connected ${connected}! Check your N8N instance for new credentials.`);
+            // Clear URL parameters
+            router.replace('/dashboard');
+        } else if (error) {
+            setMessage(`❌ Connection failed: ${error}`);
+            router.replace('/dashboard');
+        }
+    }, [searchParams, router]);
+
     return (
         <AppPageShell
             title={dashboardPageConfig.title}
             description={dashboardPageConfig.description}
         >
             <div className="grid gap-6">
+                {message && (
+                    <Alert className={`${message.includes('✅') ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+                        <AlertDescription className="text-sm">{message}</AlertDescription>
+                    </Alert>
+                )}
+
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Total Revenue
+                                Google Services
                             </CardTitle>
-                            <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
+                            <GoogleIcon />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">$45,231.89</div>
-                            <p className="text-xs text-muted-foreground">
-                                +20.1% from last month
+                            <ServiceButton 
+                                service="google" 
+                                label="Google" 
+                                icon={<GoogleIcon />}
+                                user={user}
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">
+                                Gmail, Drive, Sheets & more
                             </p>
                         </CardContent>
                     </Card>
+                    
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Subscriptions
+                                Spotify Music
                             </CardTitle>
-                            <Users2Icon className="h-4 w-4 text-muted-foreground" />
+                            <MusicIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+3402</div>
-                            <p className="text-xs text-muted-foreground">
-                                +20.1% from last month
+                            <ServiceButton 
+                                service="spotify" 
+                                label="Spotify" 
+                                icon={<MusicIcon className="h-5 w-5" />}
+                                user={user}
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">
+                                Music automation & playlists
                             </p>
                         </CardContent>
                     </Card>
+                    
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Active Now
+                                Discord Bot
                             </CardTitle>
-                            <ActivityIcon className="h-4 w-4 text-muted-foreground" />
+                            <DiscordIcon />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+304</div>
-                            <p className="text-xs text-muted-foreground">
-                                +20.1% from last month
+                            <ServiceButton 
+                                service="discord" 
+                                label="Discord" 
+                                icon={<DiscordIcon />}
+                                user={user}
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">
+                                Notifications & community
                             </p>
                         </CardContent>
                     </Card>
+                    
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Sales
+                                GitHub Repos
                             </CardTitle>
-                            <CreditCardIcon className="h-4 w-4 text-muted-foreground" />
+                            <GithubIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">+102304</div>
-                            <p className="text-xs text-muted-foreground">
-                                +20.1% from last month
+                            <ServiceButton 
+                                service="github" 
+                                label="GitHub" 
+                                icon={<GithubIcon className="h-5 w-5" />}
+                                user={user}
+                            />
+                            <p className="text-xs text-muted-foreground mt-2">
+                                Code automation & webhooks
                             </p>
                         </CardContent>
                     </Card>
                 </div>
 
                 <div className="flex min-h-44 w-full items-center justify-center rounded-md border-2 border-dashed border-border p-4">
-                    <p className="text-sm text-muted-foreground">
-                        Your Content here, Above is a dummy data
-                    </p>
+                    <div className="text-center">
+                        <p className="text-sm text-muted-foreground mb-2">
+                            🎯 Connect your services above to start automating with N8N
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                            Once connected, credentials will be available in your N8N instance
+                        </p>
+                    </div>
                 </div>
             </div>
         </AppPageShell>
