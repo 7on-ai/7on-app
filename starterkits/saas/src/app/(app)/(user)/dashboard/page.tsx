@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { type User } from "next-auth";
 import {
@@ -122,9 +121,9 @@ export function DashboardClient({ user }: DashboardClientProps) {
     return (
         <>
             {message && (
-                <Alert className={`${message.includes('✅') ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
-                    <AlertDescription className="text-sm">{message}</AlertDescription>
-                </Alert>
+                <div className={`p-4 rounded-lg border ${message.includes('✅') ? 'border-green-500 bg-green-50 text-green-700' : 'border-red-500 bg-red-50 text-red-700'}`}>
+                    <p className="text-sm">{message}</p>
+                </div>
             )}
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
