@@ -65,7 +65,7 @@ function ServiceButton({ service, label, icon, user }: ServiceButtonProps) {
     <Button
       onClick={handleConnect}
       disabled={isConnecting || !user}
-      className="flex items-center justify-center gap-2 text-sm font-bold h-full w-full px-0 py-0 mt-0.5"
+      className="flex items-center justify-center gap-2 text-sm font-bold h-full w-full px-0 py-0 border border-gray-200 rounded-lg hover:border-gray-300"
       variant="ghost"
     >
       {isConnecting ? <Icons.loader className="h-4 w-4" /> : icon}
@@ -175,8 +175,8 @@ return (
     )}
 
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-      <Card>
-        <CardContent className="p-0 pt-[5px] flex items-center justify-center h-24">
+      <Card className="border-0 shadow-none">
+        <CardContent className="p-4 flex items-center justify-center h-24">
           <ServiceButton
             service="google"
             label="Google"
@@ -186,8 +186,8 @@ return (
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="p-0 pt-[5px] flex items-center justify-center h-24">
+      <Card className="border-0 shadow-none">
+        <CardContent className="p-4 flex items-center justify-center h-24">
           <ServiceButton
             service="spotify"
             label="Spotify"
@@ -197,8 +197,8 @@ return (
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="p-0 pt-[5px] flex items-center justify-center h-24">
+      <Card className="border-0 shadow-none">
+        <CardContent className="p-4 flex items-center justify-center h-24">
           <ServiceButton
             service="discord"
             label="Discord"
@@ -208,8 +208,8 @@ return (
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="p-0 pt-[5px] flex items-center justify-center h-24">
+      <Card className="border-0 shadow-none">
+        <CardContent className="p-4 flex items-center justify-center h-24">
           <ServiceButton
             service="github"
             label="GitHub"
