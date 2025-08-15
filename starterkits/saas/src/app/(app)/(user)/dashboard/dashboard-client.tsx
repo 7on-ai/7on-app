@@ -65,7 +65,7 @@ function ServiceButton({ service, label, icon, user }: ServiceButtonProps) {
     <Button
       onClick={handleConnect}
       disabled={isConnecting || !user}
-      className="w-full flex flex-col items-center justify-center gap-2 text-sm font-bold"
+      className="w-full flex items-center justify-center gap-2 text-sm font-bold"
       variant="ghost"
     >
       {isConnecting ? <Icons.loader className="h-4 w-4" /> : icon}
@@ -135,9 +135,6 @@ function DiscordIcon() {
   );
 }
 
-// ----------------------
-// Dashboard
-// ----------------------
 interface DashboardClientProps {
   user: User | null;
 }
@@ -163,39 +160,65 @@ export function DashboardClient({ user }: DashboardClientProps) {
     }
   }, [searchParams, router]);
 
-  return (
-    <>
-      {message && (
-        <div
-          className={`p-4 rounded-lg border ${
-            message.includes("✅")
-              ? "border-green-500 bg-green-50 text-green-700"
-              : "border-red-500 bg-red-50 text-red-700"
-          }`}
-        >
-          <p className="text-sm">{message}</p>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-        {[
-          { service: "google", label: "Google", icon: <GoogleIcon /> },
-          { service: "spotify", label: "Spotify", icon: <MusicIcon className="h-4 w-4" /> },
-          { service: "discord", label: "Discord", icon: <DiscordIcon /> },
-          { service: "github", label: "GitHub", icon: <GithubIcon className="h-4 w-4" /> },
-        ].map((s) => (
-          <Card key={s.service}>
-            <CardContent className="p-0 flex items-center justify-center h-24">
-              <ServiceButton
-                service={s.service as any}
-                label={s.label}
-                icon={s.icon}
-                user={user}
-              />
-            </CardContent>
-          </Card>
-        ))}
+return (
+  <>
+    {message && (
+      <div
+        className={`p-4 rounded-lg border ${
+          message.includes("✅")
+            ? "border-green-500 bg-green-50 text-green-700"
+            : "border-red-500 bg-red-50 text-red-700"
+        }`}
+      >
+        <p className="text-sm">{message}</p>
       </div>
-    </>
-  );
+    )}
+
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <ServiceButton
+            service="google"
+            label="Google"
+            icon={<GoogleIcon />}
+            user={user}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <ServiceButton
+            service="spotify"
+            label="Spotify"
+            icon={<MusicIcon className="h-4 w-4" />}
+            user={user}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <ServiceButton
+            service="discord"
+            label="Discord"
+            icon={<DiscordIcon />}
+            user={user}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-0 flex items-center justify-center h-24">
+          <ServiceButton
+            service="github"
+            label="GitHub"
+            icon={<GithubIcon className="h-4 w-4" />}
+            user={user}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  </>
+);
 }
