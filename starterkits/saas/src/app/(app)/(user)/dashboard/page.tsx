@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUser } from "@/server/auth";
 import { type User } from "next-auth";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/_components/alert";
 import {
     GithubIcon,
     MusicIcon,
