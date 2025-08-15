@@ -65,7 +65,7 @@ function ServiceButton({ service, label, icon, user }: ServiceButtonProps) {
     <Button
       onClick={handleConnect}
       disabled={isConnecting || !user}
-      className="flex items-center justify-center gap-2 text-sm font-bold h-full w-full px-0 py-0"
+      className="flex items-center justify-center gap-2 text-sm font-bold h-full w-full px-0 py-0 mt-0.5"
       variant="ghost"
     >
       {isConnecting ? <Icons.loader className="h-4 w-4" /> : icon}
